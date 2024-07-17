@@ -58,8 +58,10 @@ class SirDan( commands.Bot ):
 	async def on_ready( self ):
 		self.m_log.info( f'Logged in as {self.user.display_name}.' )
 
-		self.m_log.info( "Starting thread.")
-		self.loop.create_task(self.remain_legitimate_thread( _channel = self.get_channel( self.m_channel_id ) ) )
+		# self.m_log.info( "Starting thread.")
+		# self.loop.create_task(self.remain_legitimate_thread( _channel = self.get_channel( self.m_channel_id ) ) )
+
+		await self.load_extension( "SDBCommands" )
 
 
 	async def on_message( self, _message: discord.Message ) -> None:
@@ -71,10 +73,3 @@ class SirDan( commands.Bot ):
 		
 		return await super().on_message( _message )
 # ============================================================================
-
-
-sir_dan_intents = discord.Intents.default()
-sir_dan_intents.message_content = True
-
-sir_dan = SirDan( _intents = sir_dan_intents )
-sir_dan.run( sir_dan.m_token, root_logger=True )
