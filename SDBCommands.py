@@ -5,6 +5,8 @@ import logging
 # testing
 from datetime import datetime
 from datetime import timedelta
+import random
+from datetime import time
 
 class Commands( commands.Cog ):
     def __init__( self, _bot ):
@@ -22,9 +24,13 @@ class Commands( commands.Cog ):
 
     @commands.command()
     async def bereal( self, ctx: commands.Context ):
-        delta = datetime.combine( datetime.today() + timedelta( days=1 ), datetime.min.time() ) - datetime.combine( datetime.today(), datetime.now().time() )
-        print( f"{delta}" )
-        await ctx.send( "bjr" )
+        now = datetime.now()
+        random_hour = random.randint( 10, 21 )
+        random_minute = random.randint( 0, 59 )
+        bereal_time = time( random_hour, random_minute )
+        delta = datetime.combine( datetime.today() + timedelta( days=1 ), bereal_time ) - datetime.combine( datetime.today(), datetime.now().time() )
+        
+        await ctx.send( f"now {now}\nbereal time {bereal_time}\ndelta {delta}" )
 
 
 async def setup( _bot ):
