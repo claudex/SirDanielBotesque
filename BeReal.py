@@ -22,11 +22,11 @@ DEFAULT_MAX_TIME = "22:00:00"
 # BEREAL
 # ============================================================================
 class BeReal:
-	m_log: logging.Logger
-	m_channel_id: int
-	m_role_id: int
-	m_min_time: time
-	m_max_time: time
+	m_log: logging.Logger = None
+	m_channel_id = 0
+	m_role_id = 0
+	m_min_time = time.fromisoformat( DEFAULT_MIN_TIME )
+	m_max_time = time.fromisoformat( DEFAULT_MAX_TIME )
 	m_datetime: datetime
 
 	def __init__( self ):
@@ -67,7 +67,8 @@ class BeReal:
 
 	def save_config( self, _json_data: dict ):
 		_json_data[ CFG_BEREAL ] = {}
-		_json_data[ CFG_BEREAL ][ CFG_CHANNEL ] = self.m_channel_id
+		if self.m_channel_id != 0:
+			_json_data[ CFG_BEREAL ][ CFG_CHANNEL ] = self.m_channel_id
 		_json_data[ CFG_BEREAL ][ CFG_ROLE ] = self.m_role_id
 		_json_data[ CFG_BEREAL ][ CFG_MIN_TIME ] = self.m_min_time.isoformat()
 		_json_data[ CFG_BEREAL ][ CFG_MAX_TIME ] = self.m_max_time.isoformat()
