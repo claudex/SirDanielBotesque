@@ -7,8 +7,8 @@ from datetime import date
 from datetime import time
 
 
-ROLE_ADMIN = 'AdminOzor'
-ROLE_MOD = 'ModOzor'
+ROLE_ADMIN = 948725563470798899
+ROLE_MOD = 959829471324672011
 
 
 def is_date_valid( _date: str ):
