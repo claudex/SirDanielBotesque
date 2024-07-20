@@ -3,6 +3,8 @@ from discord.ext import commands
 import json
 import logging
 from BeReal import BeReal
+from datetime import date
+from datetime import time
 
 
 # "Constant" variables
@@ -46,8 +48,29 @@ class SirDan( commands.Bot ):
 			outfile.write( json.dumps( bot_config, sort_keys = False, indent = 4 ) )
 
 
+# BEREAL ------------------------------------------------------------------
 	def generate_next_bereal( self ):
 		self.m_bereal.generate_next_bereal()
+		self.save_bot_config()
+
+	def bereal_set_channel( self, _channel_id: int ):
+		self.m_log.info( f"New BeReal channel id: {_channel_id}")
+		self.m_bereal.m_channel_id = _channel_id
+		self.save_bot_config()
+
+	def bereal_set_role( self, _role_id: int ):
+		self.m_log.info( f"New BeReal role id: {_role_id}")
+		self.m_bereal.m_role_id = _role_id
+		self.save_bot_config()
+
+	def bereal_set_min_time( self, _time: time ):
+		self.m_log.info( f"New BeReal time lower bound: {_time.isoformat()}")
+		self.m_bereal.m_min_time = _time
+		self.save_bot_config()
+
+	def bereal_set_max_time( self, _time: time ):
+		self.m_log.info( f"New BeReal time upper bound: {_time.isoformat()}")
+		self.m_bereal.m_max_time = _time
 		self.save_bot_config()
 
 	# ---------------------------------
@@ -60,7 +83,8 @@ class SirDan( commands.Bot ):
 				self.generate_next_bereal()
 
 			await self.m_bereal.manage_bereal()
-			await self.get_channel( self.m_bereal.m_channel_id ).send( f"c'est l'heure du <@&{self.m_bereal.m_role_id}> ! :camera_with_flash:" )
+			bereal_channel = self.get_channel( self.m_bereal.m_channel_id )
+			await bereal_channel.send( f"c'est l'heure du <@&{self.m_bereal.m_role_id}> ! :camera_with_flash:" )
 
 			self.generate_next_bereal()
 
@@ -73,6 +97,7 @@ class SirDan( commands.Bot ):
 		self.loop.create_task(self.remain_legitimate_thread() )
 
 		await self.load_extension( "SDBCommands" )
+		await self.load_extension( "SDBModCommands" )
 
 
 	async def on_message( self, _message: discord.Message ) -> None:

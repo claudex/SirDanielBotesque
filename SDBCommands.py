@@ -27,13 +27,6 @@ class Commands( commands.Cog ):
 		game_name = " ".join( _game ).title()
 		link_end = "+".join( _game )
 		await ctx.send( f"Recherche Is There Any Deal: **[{ game_name }](<https://isthereanydeal.com/search/?q={ link_end }>)**")
-
-	# ---------------------------------
-	# Synchronize command tree with discord
-	# ---------------------------------
-	@commands.command( name = "sync_commands" )
-	async def sync_command_tree( self, ctx ):
-		await self.bot.tree.sync()
 # ============================================================================
 
 
