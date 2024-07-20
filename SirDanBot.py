@@ -98,14 +98,4 @@ class SirDan( commands.Bot ):
 
 		await self.load_extension( "SDBCommands" )
 		await self.load_extension( "SDBModCommands" )
-
-
-	async def on_message( self, _message: discord.Message ) -> None:
-		if _message.author == self.user:
-			return await super().on_message( _message )
-		
-		if _message.content.lower() == "ping":
-			await _message.channel.send( f'pong :ping_pong:' )
-		
-		return await super().on_message( _message )
 # ============================================================================
