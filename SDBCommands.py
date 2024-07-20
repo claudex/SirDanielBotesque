@@ -3,34 +3,38 @@ from discord.ext import commands
 from SirDanBot import SirDan
 import logging
 # testing
-from datetime import datetime
-from datetime import timedelta
 import random
-from datetime import time
 
+# ============================================================================
+# COMMANDS
+# ============================================================================
 class Commands( commands.Cog ):
-	def __init__( self, _bot ):
+	def __init__( self, _bot: commands.Bot ):
 		self.bot = _bot
 
+	# ---------------------------------
+	# Simple test command
+	# ---------------------------------
 	@commands.command()
 	async def ping( self, ctx ):
 		await ctx.send( "pong" )
 
+	# ---------------------------------
+	# Generate a Is There Any Deal search link from given game name
+	# ---------------------------------
 	@commands.command()
 	async def deal( self, ctx: commands.Context, *_game ):
 		game_name = " ".join( _game ).title()
 		link_end = "+".join( _game )
 		await ctx.send( f"Recherche Is There Any Deal: **[{ game_name }](<https://isthereanydeal.com/search/?q={ link_end }>)**")
 
-	@commands.command()
-	async def bereal( self, ctx: commands.Context ):
-		now = datetime.now()
-		random_hour = random.randint( 10, 21 )
-		random_minute = random.randint( 0, 59 )
-		bereal_time = time( random_hour, random_minute )
-		delta = datetime.combine( datetime.today() + timedelta( days=1 ), bereal_time ) - datetime.combine( datetime.today(), datetime.now().time() )
-
-		await ctx.send( f"now {now}\nbereal time {bereal_time}\ndelta {delta}" )
+	# ---------------------------------
+	# Synchronize command tree with discord
+	# ---------------------------------
+	@commands.command( name = "sync_commands" )
+	async def sync_command_tree( self, ctx ):
+		await self.bot.tree.sync()
+# ============================================================================
 
 
 async def setup( _bot ):
