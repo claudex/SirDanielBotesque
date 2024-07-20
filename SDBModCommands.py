@@ -125,11 +125,20 @@ class ModCommands( commands.Cog ):
 		await ctx.send( "# État courant" )
 
 		bereal = self.m_sir_dan.m_bereal
-		role = ctx.guild.get_role( bereal.m_role_id )
 
 		bereal_status:str = "## BeReal"
-		bereal_status += f"\n**Chan:** <#{bereal.m_channel_id}>"
-		bereal_status += f"\n**Role:** {role.name}"
+
+		if bereal.m_channel_id != 0:
+			bereal_status += f"\n**Chan:** <#{bereal.m_channel_id}>"
+		else:
+			bereal_status += f"\n**Chan:** *<Aucun>*"
+
+		if bereal.m_role_id != 0:
+			role = ctx.guild.get_role( bereal.m_role_id )
+			bereal_status += f"\n**Role:** {role.name}"
+		else:
+			bereal_status += f"\n**Role:** *<Aucun>*"
+		
 		bereal_status += f"\n**Heure min:** {bereal.m_min_time.isoformat()}"
 		bereal_status += f"\n**Heure max:** {bereal.m_max_time.isoformat()}"
 
