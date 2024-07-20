@@ -74,15 +74,16 @@ class ModCommands( commands.Cog ):
 	# ---------------------------------
 	@commands.command()
 	@commands.has_any_role( ROLE_ADMIN, ROLE_MOD )
-	async def bereal_set_role( self, ctx: commands.Context ):
-		if not ctx.message.role_mentions:
-			await ctx.send( "Il faut mentionner un role pour utiliser cette commande. `/bereal_set_role @role`" )
+	async def bereal_set_role( self, ctx: commands.Context, _role_id: int ):
+		role: discord.Role = ctx.guild.get_role( _role_id )
+		
+		if role == None:
+			await ctx.send( "L'ID de role donné n'est pas valide. `/bereal_set_role 12345` où 12345 est l'ID du role visé." )
 			return
 		
-		role: discord.Role = ctx.message.role_mentions[ 0 ]
 		self.m_log.info( f"New BeReal role set via command: {ctx.message.guild.name} - {role.name}" )
 		self.m_sir_dan.bereal_set_role( role.id )
-		await ctx.send( f"Je mentionnerai désormais le role <@&{role.id}> quand ce sera l'heure du BeReal. :+1:" )
+		await ctx.send( f"Je mentionnerai désormais le role `@{role.name}` quand ce sera l'heure du BeReal. :+1:" )
 
 
 	# ---------------------------------
